@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Counter Culture",
+    "slug": "counter-culture",
+    "version": "1.0.0",
+    "scheme": "counter-culture",
+    "platforms": ["ios", "android"],
+    "ios": {
+      "bundleIdentifier": "com.counterculture.app"
+    },
+    "newArchEnabled": true,
+    "experiments": {
+      "reactCanary": true
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "counter-culture-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@types/react": "^19.1.10",
+    "eslint": "^8.21.0",
+    "turbo": "^2.6.1",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "native": "cd apps/expo && bun run start",
+    "web": "cd apps/next && bun run dev"
+  },
+  "eslintConfig": {
+    "extends": "next",
+    "settings": {
+      "next": {
+        "rootDir": "apps/next/"
+      }
+    },
+    "root": true
+  },
+  "resolutions": {
+    "lightningcss": "1.30.1"
+  },
+  "prettier": {
+    "semi": false,
+    "useTabs": false,
+    "tabWidth": 2,
+    "singleQuote": true
+  },
+  "overrides": {
+    "lightningcss": "1.30.1"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.17"
+  }
+}
