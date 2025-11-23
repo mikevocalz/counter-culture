@@ -2,8 +2,19 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "paths": {
-      "@/*": ["./*"],
-      "@components/*": ["../../packages/app/components/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@components/*": [
+        "../../packages/app/components/*"
+      ]
     }
-  }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
+  ]
 }

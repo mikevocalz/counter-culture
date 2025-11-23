@@ -1,5 +1,5 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import React, { useEffect, ComponentProps } from "react";
+import { useEffect, ComponentProps } from "react";
 import type { RouteName } from "./icons";
 import { icons } from "./icons";
 import Animated, {

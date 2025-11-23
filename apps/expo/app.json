@@ -5,12 +5,58 @@
     "version": "1.0.0",
     "scheme": "counter-culture",
     "platforms": ["ios", "android"],
-    "ios": {
-      "bundleIdentifier": "com.counterculture.app"
-    },
+    "userInterfaceStyle": "dark",
+    "icon": "./assets/images/icon.png",
     "newArchEnabled": true,
     "experiments": {
-      "reactCanary": true
+      "reactCanary": true,
+      "reactCompiler": true,
+      "typedRoutes": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "server",
+      "favicon": "./assets/images/favicon.ico"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://evanbacon.dev/"
+        }
+      ],
+      "expo-web-browser",
+      "expo-font"
+    ],
+    "orientation": "portrait",
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode":"cover",
+      "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.counterculture.app",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
+        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to use your camera",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to use your microphone"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "package": "com.counterculture.app"
     }
   }
 }

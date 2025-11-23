@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import React from "react";
 import TabBarIcon from "./TabBarIcon";
 import CenterButton from "./CenterButton";
@@ -6,28 +6,41 @@ import { Menu, Plus } from "lucide-react-native";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 
 const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
-  const primaryColor = "#0891b2";
-  const greyColor = "#737373";
+  const primaryColor = "#a032d6";
+  const greyColor = "#fff";
 
-  const containerClassName = isLargeScreen
-    ? "!z-50 absolute !right-2 !top-3  w-[54px] flex-col items-center bg-transparent !h-[80%] justify-between"
-    : "absolute bottom-6 left-3 right-3 bg-transparent";
-
-  const tabsWrapperClassName = isLargeScreen
-    ? "flex-1 flex-col bg-zinc-900 w-[72px] rounded-2xl shadow-lg"
-    : "flex-row items-center justify-between bg-white rounded-3xl py-4 px-4 shadow-lg";
-
-    const wrapperClassName = isLargeScreen
-    ? "flex-1 w-full items-center justify-center !h-[calc(80%/5)]"
-    : "flex-1";
+  const orderedRoutes = [...state.routes].sort((a, b) => {
+    const order = ["index", "two", "center", "three", "four"];
+    const aIndex = order.indexOf(a.name);
+    const bIndex = order.indexOf(b.name);
+    if (aIndex === -1 && bIndex === -1) return 0;
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
+  });
 
   return (
     <>
-    <View className={containerClassName}>
-   
-
-      <View className={tabsWrapperClassName}>
-      {state.routes.map((route, index) => {
+    <View style={{
+      position: 'absolute', 
+      bottom:Platform.OS === 'ios' ? 25 : 35,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: '#000',
+      marginHorizontal: 15,
+      paddingVertical: 15,
+      paddingHorizontal: 15,
+      borderRadius: 25,
+      borderCurve: 'continuous',
+      shadowColor: 'black',
+      shadowOffset: {width: 0, height: 10},
+      shadowRadius: 10,
+      shadowOpacity: 0.1,
+      left: 0,
+      right: 0,
+    }}>
+      {orderedRoutes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
@@ -59,32 +72,15 @@ const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
           });
         };
 
-        // On mobile, render the center route as a CenterButton in-line,
-        // but give it a flex-1 slot like other tabs
-        if (!isLargeScreen && route.name === "center") {
+        if (route.name === "center") {
           return (
-            <View key={route.name} className="flex-1 items-center">
+            <View key={route.name} style={{ flex: 1, alignItems: "center" }}>
               <CenterButton Icon={Plus} isLargeScreen={false} />
             </View>
           );
         }
 
-        // On large screens, skip the center route from the vertical list;
-        // it will be handled by the separate CenterButton below.
-        if (isLargeScreen && route.name === "center") return null;
-
-        return isLargeScreen ? (
-          <View key={route.name} className={wrapperClassName}>
-            <TabBarIcon
-              onPress={onPress}
-              onLongPress={onLongPress}
-              isFocused={isFocused}
-              routeName={route.name}
-              color={isFocused ? primaryColor : greyColor}
-              label={label}
-            />
-          </View>
-        ) : (
+        return (
           <TabBarIcon
             key={route.name}
             onPress={onPress}
@@ -96,28 +92,8 @@ const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
           />
         )
       })}
-      </View>
-      
-      {isLargeScreen && (
-        <CenterButton Icon={Plus} isLargeScreen={isLargeScreen} />
-      )}
-
-   
-      
     </View>
-
-       {isLargeScreen && (
-        <Pressable
-          onPress={() => navigation.openDrawer()}
-          className="z-50 absolute right-2 bottom-2 w-[72px] h-[72px] aspect-square bg-zinc-900 rounded-xl  items-center justify-center"
-        >
-             <DrawerToggleButton
-             size={30}
-                      tintColor={'#fff'}
-                    />
-        </Pressable>
-      )}
-      </>
+    </>
   );
 };
 

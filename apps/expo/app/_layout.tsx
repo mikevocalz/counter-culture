@@ -67,10 +67,11 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+    <ThemeProvider value={DarkTheme}>
+      <Stack screenOptions={{
+        contentStyle: {backgroundColor: "#000"}}}>
+        <Stack.Screen name="(drawer)" options={{ headerShown: false, contentStyle: {backgroundColor: "#000"} }} />
+        <Stack.Screen name="modal" options={{ presentation: "modal", contentStyle: {backgroundColor: "#000"} }} />
       </Stack>
     </ThemeProvider>
   );
