@@ -14,9 +14,10 @@ type TabBarIconProps = ComponentProps<typeof Pressable> & {
   label: string;
   routeName: RouteName;
   color: string;
+  isVertical?: boolean;
 };
 
-const TabBarIcon = ({isFocused, label, routeName, color, ...props}: TabBarIconProps) => {
+const TabBarIcon = ({isFocused, label, routeName, color, isVertical, ...props}: TabBarIconProps) => {
 
   const scale = useSharedValue(0);
 
@@ -46,7 +47,7 @@ const TabBarIcon = ({isFocused, label, routeName, color, ...props}: TabBarIconPr
     };
   });
   return (
-    <Pressable {...props} style={styles.container}>
+    <Pressable {...props} style={[styles.container, isVertical && { flex: 0, width: 56, height: 56 }]}>
       <Animated.View style={[animatedIconStyle]}>
         {icons[routeName]({
           color,

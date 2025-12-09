@@ -1,20 +1,21 @@
-import React ,{ ComponentProps } from 'react';
+import { ComponentProps } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Platform, useWindowDimensions, Pressable } from 'react-native';
+import { Platform, useWindowDimensions, Pressable, View } from 'react-native';
 import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
 import { Drawer } from "expo-router/drawer";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import Logo from '../../../../packages/app/components/logo'
 import { Bell } from 'lucide-react-native';
+import Badge from '../../components/Badge';
+import { router } from 'expo-router';
 
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { width } = useWindowDimensions();
   const isLargeScreen = width >= 768; // treat tablet/dual-screen and above as large
-
-    //const navigation = useNavigation();
+  const notificationCount = 3; // Replace with your actual notification count state
 
   return (
     <Drawer
@@ -25,14 +26,25 @@ export default function TabLayout() {
         headerStyle: {
           backgroundColor: '#000', // Custom background color
         },
-        //title: "",
-        headerTitle: () => <Logo  style={{marginTop: Platform.OS === 'android' ? -10 : -20}}
-        width={Platform.OS === 'android' ? 140 : 130} height={Platform.OS === 'android' ? 58 : 58} />,
+        headerTitle: () => <Logo  style={{marginTop: Platform.OS === 'android' ? -10 : -22}}
+        width={Platform.OS === 'android' ? 140 : 110} 
+        height={Platform.OS === 'android' ? 58 : 48} />,
         headerRight:()=>{
-         return(
-          <Pressable onPress={()=>{}} style={{marginHorizontal: 20, marginBottom: 8}}>
-            <Bell size={28} color="white" fill="white" stroke='red' strokeWidth={1} />
-          </Pressable>
+         return (
+           <Pressable
+             pressRetentionOffset={10}
+             onPress={() => router.push('/notifications')}
+             style={{ marginHorizontal: 20, marginBottom: 8, padding: 4 }}
+           >
+             <Bell
+               size={28}
+               color="white"
+               fill="white"
+               stroke="#a032d6"
+               strokeWidth={1}
+             />
+             <Badge count={notificationCount} />
+           </Pressable>
          )
         },
         headerLeft: () => {

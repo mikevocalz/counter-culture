@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
+import { Platform, StyleSheet, View, Text } from 'react-native'
+import { Container } from '../components/Container'
+import { H1 } from '@expo/html-elements'
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-
-export default function ModalScreen() {
+export default function NotificationsScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/modal.tsx" />
+    <Container className="flex-1 w-full items-center ">
+      <H1 className="text-2xl text-white font-bold text-center">
+        Camera Screen
+      </H1>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
-  );
+    </Container>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -32,4 +31,4 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-});
+})

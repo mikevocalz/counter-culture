@@ -1,20 +1,22 @@
 import "../global.css";
-
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+ import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { ChevronLeft } from 'lucide-react-native';
+import { Pressable } from 'react-native';
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack , router} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "../components/useColorScheme";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { Provider } from "app/provider";
+import Splash from "../components/Splash";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -31,48 +33,132 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
-  });
-
+  })
 
   useEffect(() => {
-    ScreenOrientation.unlockAsync();
-  }, []);
-  
+    ScreenOrientation.unlockAsync()
+  }, [])
+
+  const [riveDone, setRiveDone] = useState(false) // ✅ ADD THIS
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    if (error) throw error
+  }, [error])
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync()
     }
-  }, [loaded]);
+  }, [loaded])
 
   if (!loaded) {
-    return null;
+    return null
+    // <Splash onFinish={() => setRiveDone(true)} />
   }
 
-  return(
-      <Provider>
-        <RootLayoutNav />
-      </Provider>
-  ) 
+  return (
+    <Provider>
+      <RootLayoutNav />
+    </Provider>
+  )
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  //const navigation = useNavigation();
 
   return (
     <ThemeProvider value={DarkTheme}>
-      <Stack screenOptions={{
-        contentStyle: {backgroundColor: "#000"}}}>
-        <Stack.Screen name="(drawer)" options={{ headerShown: false, contentStyle: {backgroundColor: "#000"} }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal", contentStyle: {backgroundColor: "#000"} }} />
+      <Stack
+        screenOptions={{
+          contentStyle: { backgroundColor: '#000' },
+        }}
+      >
+        <Stack.Screen
+          name="(drawer)"
+          options={{
+            headerShown: false,
+            contentStyle: { backgroundColor: '#000' },
+          }}
+        />
+        <Stack.Screen
+          name="modal"
+          options={{
+            presentation: 'fullScreenModal',
+            headerShown: true,
+            headerBackVisible: false,
+            headerTransparent: false,
+            headerBlurEffect: 'none',
+            title: '',
+            headerStyle: {
+              backgroundColor: '#000',
+            },
+            headerTitleStyle: {
+              color: '#fff',
+            },
+            headerLeft: () => (
+              <Pressable
+                onPress={() => router.back()}
+                style={{
+                  width: 44,
+                  height: 44,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft: 4,
+                }}
+              >
+                <ChevronLeft size={24} color="#fff" />
+              </Pressable>
+            ),
+            contentStyle: { backgroundColor: '#000' },
+            animation: 'fade_from_bottom',
+            animationDuration: 300,
+            gestureEnabled: true,
+            fullScreenGestureEnabled: true,
+            gestureDirection: 'horizontal',
+          }}
+        />
+        <Stack.Screen
+          name="notifications"
+          options={{
+            presentation: 'modal',
+            headerShown: true,
+            headerBackVisible: false,
+            headerTransparent: false,
+            headerBlurEffect: 'none',
+            title: '',
+            headerStyle: {
+              backgroundColor: '#000',
+            },
+            headerTitleStyle: {
+              color: '#fff',
+            },
+            headerLeft: () => (
+              <Pressable
+                onPress={() => router.back()}
+                style={{
+                  width: 44,
+                  height: 44,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft: 4,
+                }}
+              >
+                <ChevronLeft size={24} color="#fff" />
+              </Pressable>
+            ),
+            contentStyle: { backgroundColor: '#000' },
+            animation: 'fade_from_bottom',
+            animationDuration: 300,
+            gestureEnabled: true,
+            fullScreenGestureEnabled: true,
+            gestureDirection: 'horizontal',
+          }}
+        />
       </Stack>
     </ThemeProvider>
-  );
+  )
 }

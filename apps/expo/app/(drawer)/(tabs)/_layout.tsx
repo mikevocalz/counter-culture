@@ -8,18 +8,19 @@ import Logo from '../../../components/Logo';
 export default function TabLayout() {
   const { width } = useWindowDimensions();
   // Keep native phone/tablet bottoms bars; only go vertical on wide web layouts.
-  const isLargeScreen = Platform.OS === 'web' && width >= 1024;
+  const isLargeScreen = width >= 1024;
 
   return (
     <Tabs
       initialRouteName="index"
       tabBar={
-      (props) => <TabBar {...props} isLargeScreen={isLargeScreen} />
+      (props) => <TabBar isLargeScreen={isLargeScreen} {...props} />
       }
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "gray",
+        tabBarPosition: isLargeScreen ? "right" : "bottom",
       }}
     >
       <Tabs.Screen

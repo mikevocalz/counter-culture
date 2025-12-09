@@ -11,11 +11,8 @@ export default function ScreenTwo() {
 
 
   return (
-    <>
-   
-      <Container className="flex-1 items-center bg-indigo-500">
+      <Container className="flex-1 items-center">
         <H1 className="text-white font-bold">Events Screen</H1>
       </Container>
-    </>
   );
 }

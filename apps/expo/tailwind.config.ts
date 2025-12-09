@@ -1,8 +1,14 @@
 /** @type {import('tailwindcss').Config} */
-
+const { hairlineWidth } = require('nativewind/theme');
+         
 module.exports = {
   darkMode: 'class',
-  content: ['./app/**/*.{js,ts,tsx}', './components/**/*.{js,ts,tsx}'],
+  content: [
+    './app/**/*.{js,ts,tsx}',
+    './components/**/*.{js,ts,tsx}',
+    '../../packages/app/**/*.{js,ts,tsx}',
+    '../../packages/app/components/**/*.{js,ts,tsx}',
+  ],
   presets: [require('nativewind/preset')],
   theme: {
       screens: {
@@ -14,5 +20,8 @@ module.exports = {
       xl: '1280px',
     },
   },
-  plugins: [],
+    future: {
+    hoverOnlyWhenSupported: true,
+  },
+  plugins: [require('tailwindcss-animate')],
 };

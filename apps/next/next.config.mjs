@@ -1,16 +1,26 @@
-const path = require('path')
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { withPayload } from '@payloadcms/next/withPayload'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 /**
  * @type {import('next').NextConfig}
  */
 const withWebpack = {
-  webpack(config) {
+  webpack(config, { isServer }) {
     if (!config.resolve) {
       config.resolve = {}
     }
 
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
+      '@payload-config': path.resolve(__dirname, 'payload.config.ts'),
+      'react-native': 'react-native-web',
       'react-native$': 'react-native-web',
+      'lucide-react-native': 'lucide-react',
+      '@rn-primitives/avatar': './shims/avatar.tsx',
       'react-native/Libraries/Utilities/codegenNativeComponent': path.resolve(__dirname, 'shims/codegenNativeComponent.js'),
       'react-native/Libraries/EventEmitter/RCTDeviceEventEmitter$':
         'react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter',
@@ -19,6 +29,12 @@ const withWebpack = {
       'react-native/Libraries/EventEmitter/NativeEventEmitter$':
         'react-native-web/dist/vendor/react-native/NativeEventEmitter',
       'react-native-safe-area-context': 'react-native-safe-area-context/src/index.tsx',
+    }
+
+    // For server builds, alias reanimated to a no-op to prevent worklet errors
+    if (isServer) {
+      config.resolve.alias['react-native-reanimated'] = path.resolve(__dirname, './lib/reanimated-noop.js')
+      config.resolve.alias['react-native-worklets'] = path.resolve(__dirname, './lib/worklets-noop.js')
     }
 
     config.resolve.extensions = [
@@ -33,46 +49,22 @@ const withWebpack = {
   },
 }
 
+// Turbopack configuration removed; using webpack only.
+
 /**
  * @type {import('next').NextConfig}
  */
-const withTurpopack = {
+const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   turbopack: {
     resolveAlias: {
       'react-native': 'react-native-web',
+      'react-native$': 'react-native-web',
+      'lucide-react-native': 'lucide-react',
       'react-native/Libraries/Utilities/codegenNativeComponent': path.resolve(__dirname, 'shims/codegenNativeComponent.js'),
-      'react-native/Libraries/EventEmitter/RCTDeviceEventEmitter':
-        'react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter',
-      'react-native/Libraries/vendor/emitter/EventEmitter':
-        'react-native-web/dist/vendor/react-native/emitter/EventEmitter',
-      'react-native/Libraries/EventEmitter/NativeEventEmitter':
-        'react-native-web/dist/vendor/react-native/NativeEventEmitter',
-      'react-native-safe-area-context': 'react-native-safe-area-context/src/index.tsx',
     },
-    resolveExtensions: [
-      '.web.js',
-      '.web.jsx',
-      '.web.ts',
-      '.web.tsx',
-
-      '.js',
-      '.mjs',
-      '.tsx',
-      '.ts',
-      '.jsx',
-      '.json',
-      '.wasm',
-    ],
-    root: path.resolve(__dirname, '../..'),
-  },
-}
-
-/**
- * @type {import('next').NextConfig}
- */
-module.exports = {
-  typescript: {
-    ignoreBuildErrors: true,
   },
   images: {
     disableStaticImages: true,
@@ -108,6 +100,9 @@ module.exports = {
     ],
   },
   transpilePackages: [
+    'ReactNativeSVG.web.js',
+    'react-native-svg',
+    'react-native',
     'react-native-web',
     'react-native-safe-area-context',
     'solito',
@@ -120,10 +115,24 @@ module.exports = {
     'tailwind-merge',
     'nativewind',
     'react-native-css-interop',
-    'react-native-svg',
     'ReactNativeSVG.web.js',
     'react-native-vector-icons',
+    '@legendapp/list',
+    '@rn-primitives/avatar',
+    'lucide-react-native',
+    'payload-better-auth',
+    'better-auth',
+    'ui',
+    'app',
+    'design',
+    '@expo/vector-icons',
+    'expo-image',
+    'expo-modules-core',
+    'expo-constants',
+    '@rn-primitives/slot',
   ],
+
+  serverExternalPackages: ['undici', 'sharp', '@payloadcms/db-postgres', 'pg'],
 
   compiler: {
     define: {
@@ -131,7 +140,7 @@ module.exports = {
     },
   },
   reactStrictMode: false, // reanimated doesn't support this on web
-
   ...withWebpack,
-  ...withTurpopack,
 }
+
+export default withPayload(nextConfig)

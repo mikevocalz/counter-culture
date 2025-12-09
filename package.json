@@ -8,12 +8,21 @@
   "devDependencies": {
     "@types/react": "^19.1.10",
     "eslint": "^8.21.0",
+    "patch-package": "^8.0.1",
     "turbo": "^2.6.1",
     "typescript": "^5.9.3"
   },
   "scripts": {
     "native": "cd apps/expo && bun run start",
-    "web": "cd apps/next && bun run dev"
+    "web": "cd apps/next && bun run dev",
+    "web:build": "cd apps/next && bun run build",
+    "web:start": "cd apps/next && bun run start",
+    "payload:generate": "cd apps/next && bun run generate:types && bun run generate:importmap",
+    "payload:types": "cd apps/next && bun run generate:types",
+    "payload:importmap": "cd apps/next && bun run generate:importmap",
+    "postinstall": "patch-package",
+    "payload:migrate:fresh": "cd apps/next && bun run migrate:fresh",
+    "payload:migrate:refresh": "cd apps/next && bun run migrate:refresh"
   },
   "eslintConfig": {
     "extends": "next",
@@ -25,7 +34,8 @@
     "root": true
   },
   "resolutions": {
-    "lightningcss": "1.30.1"
+    "lightningcss": "1.30.1",
+    "react-native-svg": "14.1.0"
   },
   "prettier": {
     "semi": false,
@@ -34,9 +44,17 @@
     "singleQuote": true
   },
   "overrides": {
-    "lightningcss": "1.30.1"
+    "lightningcss": "1.30.1",
+    "react-native-svg": "14.1.0"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.17"
+    "@legendapp/list": "2.0.16",
+    "@legendapp/motion": "2.5.3",
+    "@payload-auth/better-auth-plugin": "^1.1.8",
+    "@tanstack/react-form": "latest",
+    "@tanstack/react-query": "latest",
+    "better-auth": "^1.4.3",
+    "payload-auth": "^1.7.1",
+    "react-native-emoji-popup": "^0.3.3"
   }
 }

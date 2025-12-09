@@ -7,6 +7,7 @@
       "dom.iterable",
       "esnext"
     ],
+   "jsxImportSource": "nativewind",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -37,10 +38,9 @@
         "../../packages/app/components/*"
       ],
       "@payload-config": [
-        "./payload.config.ts"
+        "payload.config.ts"
       ]
     },
-    "jsxImportSource": "nativewind",
     "types": [
       "nativewind/types"
     ]
@@ -51,7 +51,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
-  ],
+, "payload.config.ts"  ],
   "exclude": [
     "node_modules"
   ]

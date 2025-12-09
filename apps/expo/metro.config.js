@@ -1,12 +1,18 @@
 const path = require('path')
+const join = path.join
+
+const aliasPathJoin = (moduleFolders) =>
+  join(process.cwd(), '..', '..', 'node_modules', join(...moduleFolders))
+
 const { getDefaultConfig } = require('expo/metro-config')
+const { withNativeWind } = require('nativewind/metro')
 
 // 1. Enable CSS for Expo.
 const config = getDefaultConfig(__dirname, {
   isCSSEnabled: true,
 })
 
-// This is not needed for NativeWind, it is configuration for Metro to understand monorepos
+// This is for monorepo setup
 const projectRoot = __dirname
 const workspaceRoot = path.resolve(projectRoot, '../..')
 config.watchFolders = [workspaceRoot]
@@ -16,57 +22,83 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, 'node_modules'),
 ]
 
-// 2. Enable NativeWind
-const { withNativeWind } = require('nativewind/metro')
+config.resolver.unstable_enablePackageExports = true
+config.resolver.unstable_conditionNames = [
+  'require',
+  'default',
+  'browser',
+  'react-native',
+]
 
-//4.Configure the react native packager
-module.exports = (async () => {
+// Update the config with additional settings
+const updateConfig = async () => {
   const {
     resolver: { sourceExts, assetExts },
   } = await getDefaultConfig(__dirname)
-  return {
-    transformer: {
-      babelTransformerPath: require.resolve('react-native-svg-transformer'),
-    },
-    resolver: {
-      assetExts: [
-        assetExts.filter((ext) => ext !== 'svg'),
-        ...assetExts,
-        'obj',
-        'mtl',
-        'jpg',
-        'vrx',
-        'hdr',
-        'png',
-        'jpeg',
-        'gltf',
-        'glb',
-        'bin',
-        'arobject',
-        'gif',
-        'svg',
-        'pdf',
-        'ttf',
-      ],
-      sourceExts: [
-        ...sourceExts,
-        'ts',
-        'tsx',
-        'js',
-        'jsx',
-        'json',
-        'cjs',
-        'svg',
-        'mjs',
-      ],
-    },
-  }
-})()
 
-module.exports = withNativeWind(config, {
-  // 3. Set `input` to your CSS file with the Tailwind at-rules
-  input: './global.css',
-  // This is optional
-  projectRoot,
-  inlineRem: false,
-})
+  // Set transformer options
+  config.transformer = {
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    minifierPath: 'metro-minify-terser',
+    minifierConfig: {},
+    allowOptionalDependencies: true,
+    unstable_allowRequireContext: true,
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true,
+      },
+    }),
+  }
+
+  // Set resolver options
+  config.resolver = {
+    ...config.resolver,
+    alias: {
+      'react-native$': 'react-native-web',
+      './ReactNativeSVG': aliasPathJoin([
+        'react-native-svg',
+        'lib',
+        'module',
+        'ReactNativeSVG.web.js',
+      ]),
+    },
+    blockList: [
+      config.resolver.blockList,
+      /node_modules\/react-responsive-carousel\/.*/,
+    ],
+    assetExts: [
+      ...assetExts.filter((ext) => ext !== 'svg'),
+      'obj',
+      'mtl',
+      'jpg',
+      'vrx',
+      'hdr',
+      'png',
+      'jpeg',
+      'gltf',
+      'glb',
+      'bin',
+      'arobject',
+      'gif',
+      'svg',
+      'pdf',
+      'ttf',
+      'webp',
+      'riv'
+    ],
+    sourceExts: [...sourceExts, 'ts', 'tsx', 'js', 'jsx', 'json', 'cjs', 'svg'],
+  }
+
+  return config
+}
+
+// Export the final config with NativeWind
+module.exports = (async () => {
+  const updatedConfig = await updateConfig()
+  return withNativeWind(updatedConfig, {
+    input: '../global.css',
+    projectRoot,
+    inlineRem: false,
+  })
+})()

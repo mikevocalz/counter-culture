@@ -1,4 +1,4 @@
-import '../globals.css'
+import './globals.css'
 import { StylesProvider } from './styles-provider'
 import { ReactNode } from 'react'
 
