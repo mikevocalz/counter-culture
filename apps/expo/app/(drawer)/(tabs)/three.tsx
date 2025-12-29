@@ -1,18 +1,5 @@
-import React, { useCallback } from "react";
-import { Stack } from "expo-router";
-import { Text } from "react-native";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Container } from "../../../components/Container";
-import { H1 } from "@expo/html-elements";
+import { EventsScreen } from 'app/features/events/screen.native'
 
-export default function ScreenTwo() {
-  const navigation = useNavigation();
-
-
-
-  return (
-      <Container className="flex-1 items-center">
-        <H1 className="text-white font-bold">Events Screen</H1>
-      </Container>
-  );
+export default function ScreenThree() {
+  return <EventsScreen />
 }

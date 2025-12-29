@@ -54,6 +54,7 @@
     "@tanstack/react-form": "latest",
     "@tanstack/react-query": "latest",
     "better-auth": "^1.4.3",
+    "expo-video": "^3.0.15",
     "payload-auth": "^1.7.1",
     "react-native-emoji-popup": "^0.3.3"
   }

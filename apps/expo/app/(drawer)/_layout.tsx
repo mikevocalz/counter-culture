@@ -1,3 +1,4 @@
+import '../../global.css'
 import { ComponentProps } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Platform, useWindowDimensions, Pressable, View } from 'react-native';
@@ -5,17 +6,24 @@ import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
 import { Drawer } from "expo-router/drawer";
 import { DrawerToggleButton } from "@react-navigation/drawer";
+import { useNavigation } from '@react-navigation/native';
 import Logo from '../../../../packages/app/components/logo'
 import { Bell } from 'lucide-react-native';
 import Badge from '../../components/Badge';
-import { router } from 'expo-router';
+import { useRouter } from 'solito/navigation';
+import { PROFILE_USERNAME } from '../../../../packages/app/lib/profile-posts';
 
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { width } = useWindowDimensions();
   const isLargeScreen = width >= 768; // treat tablet/dual-screen and above as large
+  const navigation = useNavigation();
+  const router = useRouter();
   const notificationCount = 3; // Replace with your actual notification count state
+
+  // Check if there's a screen to go back to
+  const canGoBack = navigation.canGoBack();
 
   return (
     <Drawer
@@ -29,6 +37,12 @@ export default function TabLayout() {
         headerTitle: () => <Logo  style={{marginTop: Platform.OS === 'android' ? -10 : -22}}
         width={Platform.OS === 'android' ? 140 : 110} 
         height={Platform.OS === 'android' ? 58 : 48} />,
+        headerLeft: () => {
+          if (isLargeScreen || !canGoBack) {
+            return null
+          }
+          return <DrawerToggleButton tintColor="white" />
+        },
         headerRight:()=>{
          return (
            <Pressable
@@ -47,23 +61,12 @@ export default function TabLayout() {
            </Pressable>
          )
         },
-        headerLeft: () => {
-          if (isLargeScreen) {
-            return null
-          }
-          return (
-            // <DrawerToggleButton
-            //   tintColor={Colors[colorScheme ?? 'light'].text}
-            // />
-            null
-          )
-        },
       }}
     >
       <Drawer.Screen
         name="(tabs)"
         options={{
-          drawerLabel: 'User',
+          drawerLabel: PROFILE_USERNAME,
           //headerTitle: "User",
         }} // This is the name of the page and must match the url from root
       />

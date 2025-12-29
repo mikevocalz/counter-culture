@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Pressable, ViewStyle } from "react-native";
 import type { LucideIcon } from "lucide-react-native";
-import { router } from "expo-router";
+import { useRouter } from "solito/navigation";
 import AnimatedGlow, {
   type GlowEvent,
   type PresetConfig,
@@ -11,9 +11,11 @@ import AnimatedGlow, {
 type CenterButtonProps = {
   Icon: LucideIcon;
   isLargeScreen?: boolean;
+  onPress?: () => void;
 };
 
-const CenterButton = ({ Icon, isLargeScreen }: CenterButtonProps) => {
+const CenterButton = ({ Icon, isLargeScreen, onPress }: CenterButtonProps) => {
+  const router = useRouter();
   const [glowState, setGlowState] = useState<GlowEvent>("default");
   const isHovered = useRef(false);
   const radiusByState = useMemo<Record<GlowEvent, number>>(
@@ -131,7 +133,7 @@ const CenterButton = ({ Icon, isLargeScreen }: CenterButtonProps) => {
       ]}
     >
       <Pressable
-        onPress={() => router.push("/modal")}
+        onPress={onPress ?? (() => router.push("/modal"))}
         onPressIn={() => setGlowState("press")}
         onPressOut={() => setGlowState(isHovered.current ? "hover" : "default")}
         onHoverIn={() => {

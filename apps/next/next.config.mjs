@@ -29,6 +29,7 @@ const withWebpack = {
       'react-native/Libraries/EventEmitter/NativeEventEmitter$':
         'react-native-web/dist/vendor/react-native/NativeEventEmitter',
       'react-native-safe-area-context': 'react-native-safe-area-context/src/index.tsx',
+      'expo-video': 'expo-video/web',
     }
 
     // For server builds, alias reanimated to a no-op to prevent worklet errors
@@ -58,12 +59,17 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    scrollRestoration: true,
+  },
   turbopack: {
     resolveAlias: {
       'react-native': 'react-native-web',
       'react-native$': 'react-native-web',
       'lucide-react-native': 'lucide-react',
-      'react-native/Libraries/Utilities/codegenNativeComponent': path.resolve(__dirname, 'shims/codegenNativeComponent.js'),
+      'react-native/Libraries/Utilities/codegenNativeComponent':
+        './shims/codegenNativeComponent.js',
+      'expo-video': 'expo-video/web',
     },
   },
   images: {
@@ -97,6 +103,11 @@ const nextConfig = {
         hostname: 'static.wixstatic.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+      }
     ],
   },
   transpilePackages: [
@@ -119,7 +130,9 @@ const nextConfig = {
     'react-native-vector-icons',
     '@legendapp/list',
     '@rn-primitives/avatar',
+    '@rn-primitives/tabs',
     'lucide-react-native',
+    'lucide-react',
     'payload-better-auth',
     'better-auth',
     'ui',
@@ -127,9 +140,12 @@ const nextConfig = {
     'design',
     '@expo/vector-icons',
     'expo-image',
+    'expo-video',
     'expo-modules-core',
     'expo-constants',
     '@rn-primitives/slot',
+    '@rn-primitives/tabs',
+    'expo-video'
   ],
 
   serverExternalPackages: ['undici', 'sharp', '@payloadcms/db-postgres', 'pg'],

@@ -1,13 +1,16 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { Motion } from '@legendapp/motion'
 import { SolitoImage } from 'solito/image'
-import { Eye } from 'lucide-react'
+import { Eye, Layers, Play } from 'lucide-react-native'
 
 import { Post } from './types/Post'
 
-export function PostCard({ post }: { post: Post }) {
+export function PostCard({ post, onPress }: { post: Post; onPress?: () => void }) {
+  const showVideo = post.type === 'video'
+  const showCarousel = post.type === 'carousel'
+
   return (
-    <Motion.Pressable onPress={()=> console.log('pressed')} style={styles.card}>
+    <Motion.Pressable onPress={onPress} style={styles.card}>
       <Motion.View
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -22,6 +25,15 @@ export function PostCard({ post }: { post: Post }) {
           style={styles.image}
           alt="Post image"
         />
+        {showVideo || showCarousel ? (
+          <View style={styles.badge}>
+            {showVideo ? (
+              <Play size={14} color="#f5f5f4" fill="#f5f5f4" />
+            ) : (
+              <Layers size={14} color="#f5f5f4" />
+            )}
+          </View>
+        ) : null}
 
         <View style={styles.body}>
           <View style={styles.viewsRow}>
@@ -40,6 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#1c1917',
     overflow: 'hidden',
+    position: 'relative',
   },
   image: {
     flexShrink: 1,
@@ -70,6 +83,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
+  },
+  badge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    height: 26,
+    width: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   caption: {
     fontSize: 12,

@@ -5,7 +5,7 @@ import { Motion, AnimatePresence } from '@legendapp/motion'
 
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs'
 import { PostGrid } from './PostGrid'
-import { UserProfileHeader } from './UserProfileHeader'
+import { UserProfileHeader } from './ui/UserProfileHeader'
 import { Post } from './types/Post'
 
 const POSTS: Post[] = [

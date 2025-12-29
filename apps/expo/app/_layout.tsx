@@ -8,7 +8,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack , router} from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
@@ -17,6 +17,7 @@ import { useColorScheme } from "../components/useColorScheme";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { Provider } from "app/provider";
 import Splash from "../components/Splash";
+import { useRouter } from "solito/navigation";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -68,6 +69,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
   //const navigation = useNavigation();
 
   return (

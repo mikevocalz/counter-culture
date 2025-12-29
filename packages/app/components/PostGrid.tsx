@@ -1,36 +1,46 @@
 import { useState } from 'react'
-import { FlatList, useWindowDimensions, View } from 'react-native'
+import { useWindowDimensions, View } from 'react-native'
+import { LegendList, type LegendListRenderItemProps } from '@legendapp/list'
+import { useRouter } from 'solito/navigation'
 
 import { Post } from './types/Post'
 import { PostCard } from './PostCard'
-import { PostSkeleton } from './PostSkeleton'
 
-export function PostGrid({ initialPosts }: { initialPosts: Post[] }) {
-  const { width } = useWindowDimensions()
-  const numColumns = width < 420 ? 3 : 4
+export function PostGrid({ initialPosts, username }: { initialPosts: Post[]; username?: string }) {
+  const { width: windowWidth } = useWindowDimensions()
+  const router = useRouter()
 
   const [posts] = useState(initialPosts)
+  const gap = 8
+  const numColumns = windowWidth >= 768 ? 4 : 3
+  const handleOpen = (post: Post) => {
+    if (!username) return
+    router.push(`/${encodeURIComponent(username)}/${post.id}`)
+  }
+
+  const renderItem = ({ item }: LegendListRenderItemProps<Post>) => (
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: gap / 2,
+        marginBottom: gap,
+      }}
+    >
+      <PostCard post={item} onPress={username ? () => handleOpen(item) : undefined} />
+    </View>
+  )
 
   return (
-    <FlatList
-    contentContainerStyle={{paddingBottom:200}}
+    <LegendList
+      contentContainerStyle={{ paddingBottom: 200, paddingHorizontal: gap / 2 }}
       scrollEnabled={false}
-      removeClippedSubviews={false}
       data={posts}
-      renderItem={({ item }) => (
-        <View
-          style={{
-            width: `${100 / numColumns}%`,
-            padding: 6,
-          }}
-        >
-          <PostCard post={item} />
-        </View>
-      )}
+      renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
       numColumns={numColumns}
       key={numColumns}
       showsVerticalScrollIndicator={false}
+      recycleItems
     />
   )
 }

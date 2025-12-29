@@ -1,12 +1,15 @@
-import { Tabs, router    } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { Platform, useWindowDimensions } from 'react-native';
 import { Plus } from "lucide-react-native";
 import CenterButton from '../../../components/CenterButton';
 import TabBar from '../../../components/TabBar';
 import Logo from '../../../components/Logo';
+import { useRouter } from 'solito/navigation';
+import { AppHeader } from 'app/components/AppHeader';
 
 export default function TabLayout() {
   const { width } = useWindowDimensions();
+  const router = useRouter();
   // Keep native phone/tablet bottoms bars; only go vertical on wide web layouts.
   const isLargeScreen = width >= 1024;
 
@@ -17,7 +20,8 @@ export default function TabLayout() {
       (props) => <TabBar isLargeScreen={isLargeScreen} {...props} />
       }
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        header: () => <AppHeader />,
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "gray",
         tabBarPosition: isLargeScreen ? "right" : "bottom",
@@ -47,7 +51,7 @@ export default function TabLayout() {
           title: "",
           tabBarButton: (props) => (
             <CenterButton
-              onPress={() => router.push("/modal")} // adjust path
+              onPress={() => router.push("/modal")}
               Icon={Plus}
               {...props}
             />

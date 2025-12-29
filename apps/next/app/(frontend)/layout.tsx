@@ -1,5 +1,6 @@
 import './globals.css'
 import { StylesProvider } from './styles-provider'
+import { PortalHostClientOnly } from './portal-host-no-ssr'
 import { ReactNode } from 'react'
 
 export const metadata = {
@@ -18,8 +19,8 @@ export default function RootLayout({
         suppressHydrationWarning={true}
         suppressContentEditableWarning={true}
       >
-     
         <StylesProvider>{children}</StylesProvider>
+        <PortalHostClientOnly />
       </body>
     </html>
   )

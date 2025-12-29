@@ -52,6 +52,22 @@ const updateConfig = async () => {
   }
 
   // Set resolver options
+  const normalizeBlockList = (blockList) => {
+    if (!blockList) {
+      return []
+    }
+    const list = Array.isArray(blockList) ? blockList : [blockList]
+    const flattened = []
+    for (const item of list) {
+      if (Array.isArray(item)) {
+        flattened.push(...item)
+      } else {
+        flattened.push(item)
+      }
+    }
+    return flattened
+  }
+  const blockListPatterns = normalizeBlockList(config.resolver.blockList)
   config.resolver = {
     ...config.resolver,
     alias: {
@@ -64,8 +80,8 @@ const updateConfig = async () => {
       ]),
     },
     blockList: [
-      config.resolver.blockList,
-      /node_modules\/react-responsive-carousel\/.*/,
+      ...blockListPatterns,
+      /node_modules[\\/]react-responsive-carousel[\\/].*/,
     ],
     assetExts: [
       ...assetExts.filter((ext) => ext !== 'svg'),
@@ -97,7 +113,7 @@ const updateConfig = async () => {
 module.exports = (async () => {
   const updatedConfig = await updateConfig()
   return withNativeWind(updatedConfig, {
-    input: '../global.css',
+    input: './global.css',
     projectRoot,
     inlineRem: false,
   })
