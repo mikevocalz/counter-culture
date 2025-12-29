@@ -1,1 +1,1 @@
-export { NotificationsScreen } from './screen.tsx'
+export { NotificationsScreen } from './screen'

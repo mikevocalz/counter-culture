@@ -1,1 +1,1 @@
-export { EventsScreen } from './screen.tsx'
+export { EventsScreen } from './screen'

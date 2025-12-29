@@ -1,14 +1,14 @@
 import '../../global.css'
 import { ComponentProps } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Platform, useWindowDimensions, Pressable, View } from 'react-native';
+import { Platform, useWindowDimensions, Pressable, View, Text } from 'react-native';
 import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
 import { Drawer } from "expo-router/drawer";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import { useNavigation } from '@react-navigation/native';
 import Logo from '../../../../packages/app/components/logo'
-import { Bell } from 'lucide-react-native';
+import { Bell, MessageCircle, Search } from 'lucide-react-native';
 import Badge from '../../components/Badge';
 import { useRouter } from 'solito/navigation';
 import { PROFILE_USERNAME } from '../../../../packages/app/lib/profile-posts';
@@ -21,6 +21,8 @@ export default function TabLayout() {
   const navigation = useNavigation();
   const router = useRouter();
   const notificationCount = 3; // Replace with your actual notification count state
+  const searchRoute = '/search';
+  const chatRoute = '/chat';
 
   // Check if there's a screen to go back to
   const canGoBack = navigation.canGoBack();
@@ -45,20 +47,23 @@ export default function TabLayout() {
         },
         headerRight:()=>{
          return (
-           <Pressable
-             pressRetentionOffset={10}
-             onPress={() => router.push('/notifications')}
-             style={{ marginHorizontal: 20, marginBottom: 8, padding: 4 }}
-           >
-             <Bell
-               size={28}
-               color="white"
-               fill="white"
-               stroke="#a032d6"
-               strokeWidth={1}
-             />
-             <Badge count={notificationCount} />
-           </Pressable>
+           <View className="flex-row items-center gap-4">
+             <Pressable
+               onPress={() => router.push(searchRoute)}
+               className="h-9 w-9 items-center justify-center rounded-full bg-stone-900/60"
+             >
+               <Search size={18} color="#e7e5e4" />
+             </Pressable>
+             <Pressable
+               onPress={() => router.push(chatRoute)}
+               className="relative h-9 w-9 items-center justify-center rounded-full bg-stone-900/60"
+             >
+               <MessageCircle size={18} color="#e7e5e4" />
+               <View className="absolute -right-1 -top-1 h-4 w-4 items-center justify-center rounded-full bg-rose-500">
+                 <Text className="text-[10px] font-semibold text-white">3</Text>
+               </View>
+             </Pressable>
+           </View>
          )
         },
       }}

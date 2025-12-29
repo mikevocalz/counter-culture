@@ -1,6 +1,7 @@
 {
   "name": "counter-culture-monorepo",
   "private": true,
+  "packageManager": "bun@1.1.0",
   "workspaces": [
     "apps/*",
     "packages/*"

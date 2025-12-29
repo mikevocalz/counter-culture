@@ -106,37 +106,6 @@ export function NotificationsScreen() {
 
   return (
     <View className="flex-1 bg-stone-950">
-      <View className="border-b border-stone-800 px-4 pt-4">
-        <Text className="text-lg font-semibold text-stone-100">Notifications</Text>
-        <Tabs value={activeTab} onValueChange={(value) => selectTab(value as (typeof TABS)[number])}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingVertical: 12 }}
-          >
-            <TabsList className="h-auto justify-start bg-transparent p-0 gap-2">
-              {TABS.map((tab) => {
-                const isTabActive = isActive(tab)
-                return (
-                  <TabsTrigger
-                    key={tab}
-                    value={tab}
-                    className={cn(
-                      'rounded-full px-4 py-1.5',
-                      isTabActive ? 'bg-stone-100' : 'bg-stone-900/60'
-                    )}
-                  >
-                    <Text className={cn('text-sm font-medium', isTabActive ? 'text-stone-950' : 'text-stone-300')}>
-                      {tab}
-                    </Text>
-                  </TabsTrigger>
-                )
-              })}
-            </TabsList>
-          </ScrollView>
-        </Tabs>
-      </View>
-
       <ScreenScrollView className="flex-1 pb-24">
         <View className="divide-y divide-stone-800">
           {filteredNotifications.map((notification) => (

@@ -1,1 +1,1 @@
-export { SearchScreen } from './screen.tsx'
+export { SearchScreen } from './screen'

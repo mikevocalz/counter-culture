@@ -64,7 +64,7 @@ const stories = [
 
 export function StoriesBar() {
   const containerClass =
-    Platform.OS === 'web' ? 'mx-auto w-full max-w-2xl' : 'w-full'
+    Platform.OS === 'web' ? 'mx-auto w-full max-w-3xl' : 'w-full'
 
   return (
     <Section aria-label="Stories" className="border-b border-stone-800">
@@ -75,7 +75,7 @@ export function StoriesBar() {
           data={stories}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ padding: 16, gap: 16 }}
+          contentContainerStyle={{ paddingVertical: 6, gap: 16 }}
           renderItem={({ item }: LegendListRenderItemProps<(typeof stories)[number]>) => (
             <Pressable className="items-center gap-1.5">
               <View className="relative">

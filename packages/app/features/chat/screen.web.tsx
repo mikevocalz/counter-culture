@@ -1,1 +1,1 @@
-export { ChatScreen } from './screen.tsx'
+export { ChatScreen } from './screen'

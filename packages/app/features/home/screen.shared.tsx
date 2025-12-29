@@ -68,10 +68,10 @@ export function HomeScreen() {
           data={feedPosts}
           keyExtractor={(item) => item.id}
           renderItem={({ item }: LegendListRenderItemProps<(typeof feedPosts)[number]>) => (
-            <View className="px-4 py-3">
+            <View className="px-[4px] py-3">
               <Pressable
                 onPress={() => handleNavigate(item.author.username, item.id)}
-                className="rounded-2xl border border-stone-900/70 bg-stone-950/80 p-2 shadow-2xl shadow-black/30 backdrop-blur-xl"
+                className="rounded-2xl"
               >
                 <FeedPost post={item} enableMediaPress={false} onControlPress={handleControlPress} />
               </Pressable>
