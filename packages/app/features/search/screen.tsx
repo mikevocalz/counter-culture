@@ -130,12 +130,6 @@ export function SearchScreen() {
     <View className="flex-1 bg-stone-950">
       <View className="border-b border-stone-800 px-4 py-3">
         <View className="flex-row items-center gap-3">
-          <Pressable
-            onPress={() => router.back()}
-            className="h-10 w-10 items-center justify-center rounded-full bg-stone-900/60"
-          >
-            <ArrowLeft size={18} color="#e7e5e4" />
-          </Pressable>
           <View className="flex-1 flex-row items-center rounded-xl bg-stone-900/70 px-3">
             <Search size={16} color="#a8a29e" />
             <TextInput

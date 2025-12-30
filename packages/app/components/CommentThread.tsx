@@ -11,13 +11,27 @@ type CommentThreadProps = {
   isCommentLiked: (commentId: string) => boolean
   toggleCommentLike: (commentId: string) => void
   depth?: number
+  maxDepth?: number
+  onThreadPress?: (comment: Comment) => void
+  onReplyPress?: (comment: Comment) => void
 }
 
-export function CommentThread({ comments, isCommentLiked, toggleCommentLike, depth = 0 }: CommentThreadProps) {
+export function CommentThread({
+  comments,
+  isCommentLiked,
+  toggleCommentLike,
+  depth = 0,
+  maxDepth,
+  onThreadPress,
+  onReplyPress,
+}: CommentThreadProps) {
   return (
     <View className="gap-4">
       {comments.map((comment) => {
         const liked = isCommentLiked(comment.id)
+        const replyCount = comment.replies?.length ?? 0
+        const hasReplies = replyCount > 0
+        const canNest = maxDepth === undefined || depth < maxDepth
         return (
           <View
             key={comment.id}
@@ -38,16 +52,33 @@ export function CommentThread({ comments, isCommentLiked, toggleCommentLike, dep
                 <Text className="text-xs text-stone-500">
                   {comment.likes + (liked ? 1 : 0)} likes
                 </Text>
-                <Text className="text-xs text-stone-500">Reply</Text>
+                {onReplyPress ? (
+                  <Pressable onPress={() => onReplyPress(comment)}>
+                    <Text className="text-xs text-stone-500">Reply</Text>
+                  </Pressable>
+                ) : (
+                  <Text className="text-xs text-stone-500">Reply</Text>
+                )}
               </View>
 
-              {comment.replies?.length ? (
+              {hasReplies && !canNest && onThreadPress ? (
+                <Pressable className="mt-2" onPress={() => onThreadPress(comment)}>
+                  <Text className="text-xs font-semibold text-stone-400">
+                    View {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
+                  </Text>
+                </Pressable>
+              ) : null}
+
+              {hasReplies && canNest ? (
                 <View className="mt-3">
                   <CommentThread
-                    comments={comment.replies}
+                    comments={comment.replies ?? []}
                     isCommentLiked={isCommentLiked}
                     toggleCommentLike={toggleCommentLike}
                     depth={depth + 1}
+                    maxDepth={maxDepth}
+                    onThreadPress={onThreadPress}
+                    onReplyPress={onReplyPress}
                   />
                 </View>
               ) : null}

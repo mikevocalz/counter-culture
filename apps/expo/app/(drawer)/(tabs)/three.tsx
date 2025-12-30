@@ -1,5 +1,5 @@
-import { EventsScreen } from 'app/features/events/screen.native'
+import { NotificationsScreen } from 'app/features/notifications/screen.native'
 
 export default function ScreenThree() {
-  return <EventsScreen />
+  return <NotificationsScreen />
 }

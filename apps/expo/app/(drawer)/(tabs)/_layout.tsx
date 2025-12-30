@@ -20,7 +20,7 @@ export default function TabLayout() {
       (props) => <TabBar isLargeScreen={isLargeScreen} {...props} />
       }
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         header: () => <AppHeader />,
         tabBarActiveTintColor: "white",
         tabBarInactiveTintColor: "gray",
@@ -36,7 +36,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="two"
         options={{
-          title: "Search"
+          title: "Events"
         }}
       />
 
@@ -61,7 +61,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="three"
         options={{
-          title: "Events"
+          title: "Alerts"
         }}
       />
       <Tabs.Screen

@@ -1,5 +1,11 @@
 import { NotificationsScreen } from 'app/features/notifications/screen.native'
+import { Stack } from 'expo-router'
 
 export default function NotificationsPage() {
-  return <NotificationsScreen />
+  return (
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+      <NotificationsScreen />
+    </>
+  )
 }

@@ -18,6 +18,8 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { Provider } from "app/provider";
 import Splash from "../components/Splash";
 import { useRouter } from "solito/navigation";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { CommentsSheetNavigator } from "../components/comments/CommentsSheetNavigator";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -35,6 +37,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    RepublicaMinor: require('../assets/fonts/Republica-Minor-Regular.ttf'),
     ...FontAwesome.font,
   })
 
@@ -74,93 +77,100 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={DarkTheme}>
-      <Stack
-        screenOptions={{
-          contentStyle: { backgroundColor: '#000' },
-        }}
-      >
-        <Stack.Screen
-          name="(drawer)"
-          options={{
-            headerShown: false,
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack
+          screenOptions={{
             contentStyle: { backgroundColor: '#000' },
+            headerBackTitle: ' ',
+            headerBackButtonDisplayMode: 'minimal',
           }}
-        />
-        <Stack.Screen
-          name="modal"
-          options={{
-            presentation: 'fullScreenModal',
-            headerShown: true,
-            headerBackVisible: false,
-            headerTransparent: false,
-            headerBlurEffect: 'none',
-            title: '',
-            headerStyle: {
-              backgroundColor: '#000',
-            },
-            headerTitleStyle: {
-              color: '#fff',
-            },
-            headerLeft: () => (
-              <Pressable
-                onPress={() => router.back()}
-                style={{
-                  width: 44,
-                  height: 44,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginLeft: 4,
-                }}
-              >
-                <ChevronLeft size={24} color="#fff" />
-              </Pressable>
-            ),
-            contentStyle: { backgroundColor: '#000' },
-            animation: 'fade_from_bottom',
-            animationDuration: 300,
-            gestureEnabled: true,
-            fullScreenGestureEnabled: true,
-            gestureDirection: 'horizontal',
-          }}
-        />
-        <Stack.Screen
-          name="notifications"
-          options={{
-            presentation: 'modal',
-            headerShown: true,
-            headerBackVisible: false,
-            headerTransparent: false,
-            headerBlurEffect: 'none',
-            title: '',
-            headerStyle: {
-              backgroundColor: '#000',
-            },
-            headerTitleStyle: {
-              color: '#fff',
-            },
-            headerLeft: () => (
-              <Pressable
-                onPress={() => router.back()}
-                style={{
-                  width: 44,
-                  height: 44,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginLeft: 4,
-                }}
-              >
-                <ChevronLeft size={24} color="#fff" />
-              </Pressable>
-            ),
-            contentStyle: { backgroundColor: '#000' },
-            animation: 'fade_from_bottom',
-            animationDuration: 300,
-            gestureEnabled: true,
-            fullScreenGestureEnabled: true,
-            gestureDirection: 'horizontal',
-          }}
-        />
-      </Stack>
+        >
+          <Stack.Screen
+            name="(drawer)"
+            options={{
+              headerShown: false,
+              headerBackTitle: '',
+              contentStyle: { backgroundColor: '#000' },
+            }}
+          />
+          <Stack.Screen
+            name="modal"
+            options={{
+              presentation: 'fullScreenModal',
+              headerBackButtonDisplayMode: 'minimal',
+              headerShown: true,
+              headerBackVisible: false,
+              headerTransparent: false,
+              headerBlurEffect: 'none',
+              title: ' ',
+              headerStyle: {
+                backgroundColor: '#000',
+              },
+              headerTitleStyle: {
+                color: '#fff',
+              },
+              headerLeft: () => (
+                <Pressable
+                  onPress={() => router.back()}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginLeft: 4,
+                  }}
+                >
+                  <ChevronLeft size={24} color="#fff" />
+                </Pressable>
+              ),
+              contentStyle: { backgroundColor: '#000' },
+              animation: 'fade_from_bottom',
+              animationDuration: 300,
+              gestureEnabled: true,
+              fullScreenGestureEnabled: true,
+              gestureDirection: 'horizontal',
+            }}
+          />
+          <Stack.Screen
+            name="notifications"
+            options={{
+              presentation: 'modal',
+              headerShown: true,
+              headerBackVisible: false,
+              headerTransparent: false,
+              headerBlurEffect: 'none',
+              title: '',
+              headerStyle: {
+                backgroundColor: '#000',
+              },
+              headerTitleStyle: {
+                color: '#fff',
+              },
+              headerLeft: () => (
+                <Pressable
+                  onPress={() => router.back()}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginLeft: 4,
+                  }}
+                >
+                  <ChevronLeft size={24} color="#fff" />
+                </Pressable>
+              ),
+              contentStyle: { backgroundColor: '#000' },
+              animation: 'fade_from_bottom',
+              animationDuration: 300,
+              gestureEnabled: true,
+              fullScreenGestureEnabled: true,
+              gestureDirection: 'horizontal',
+            }}
+          />
+        </Stack>
+        <CommentsSheetNavigator />
+      </GestureHandlerRootView>
     </ThemeProvider>
   )
 }

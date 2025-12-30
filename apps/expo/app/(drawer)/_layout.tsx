@@ -33,6 +33,8 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: true,
         headerTitleAlign: 'left',
+        headerBackButtonDisplayMode: 'minimal',
+        swipeEnabled: false,
         headerStyle: {
           backgroundColor: '#000', // Custom background color
         },
@@ -47,18 +49,18 @@ export default function TabLayout() {
         },
         headerRight:()=>{
          return (
-           <View className="flex-row items-center gap-4">
+           <View className="flex-row items-center gap-6 mr-4">
              <Pressable
                onPress={() => router.push(searchRoute)}
                className="h-9 w-9 items-center justify-center rounded-full bg-stone-900/60"
              >
-               <Search size={18} color="#e7e5e4" />
+               <Search size={24} color="#e7e5e4" />
              </Pressable>
              <Pressable
                onPress={() => router.push(chatRoute)}
                className="relative h-9 w-9 items-center justify-center rounded-full bg-stone-900/60"
              >
-               <MessageCircle size={18} color="#e7e5e4" />
+               <MessageCircle size={24} color="#e7e5e4" />
                <View className="absolute -right-1 -top-1 h-4 w-4 items-center justify-center rounded-full bg-rose-500">
                  <Text className="text-[10px] font-semibold text-white">3</Text>
                </View>

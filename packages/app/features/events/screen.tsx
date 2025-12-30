@@ -39,7 +39,7 @@ export function EventsScreen() {
                 <EventCard
                   event={item}
                   height={cardHeight}
-                  onPress={() => router.push(`/events/${item.id}`)}
+                  onPress={() => router.push(`/events/${item.id}?eventName=${encodeURIComponent(item.title)}`)}
                 />
               </Motion.View>
             )}

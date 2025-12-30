@@ -58,95 +58,59 @@ export function ProfileScreen() {
             onToggleFollow={() => setFollowing((f) => !f)}
           />
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full !flex !flex-row">
-            <TabsList style={{width: 'auto', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(28, 28, 28, 0.6)', borderColor: 'rgba(68, 68, 68, 0.8)', borderWidth: 1}} className="!flex !flex-row !flex-nowrap my-4 gap-4 px-4 py-2 self-center">
-              <TabsTrigger value="posts" style={{flexDirection: 'row'}} className="mx-1">
-                <View style={{ flexDirection: 'row'}} className="!flex-row items-center gap-3">
-                  <Album
-                    size={16}
-                    style={{ marginRight: 8 }}
-                    color={activeTab === 'posts' ? '#f5f5f4' : '#737373'}
-                  />
-                  <Text
-                    style={{
-                      color: activeTab === 'posts' ? '#f5f5f4' : '#a3a3a3',
-                      fontSize: 13,
-                      fontWeight: '600',
-                    }}
-                  >
-                    Posts
-                  </Text>
-                </View>
+          <Tabs value={activeTab} onValueChange={setActiveTab} >
+            <TabsList style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', backgroundColor: 'rgba(28, 28, 28, 0.6)', borderColor: 'rgba(68, 68, 68, 0.8)', borderWidth: 1, minHeight: 44}} className="!flex !flex-row my-4 px-1 py-2">
+              <TabsTrigger value="posts" style={{flexDirection: 'row', }} className="items-center justify-center gap-1">
+                <Album
+                  size={14}
+                  color={activeTab === 'posts' ? '#f5f5f4' : '#737373'}
+                />
+                <Text style={{ color: activeTab === 'posts' ? '#f5f5f4' : '#a3a3a3', fontSize: 11, fontWeight: '600' }}>
+                  Posts
+                </Text>
               </TabsTrigger>
-              <TabsTrigger value="video" style={{flexDirection: 'row'}} className="mx-1">
-                <View style={{ flexDirection: 'row'}} className="!flex-row items-center gap-3">
-                  <Film
-                    size={16}
-                    style={{ marginRight: 8 }}
-                    color={activeTab === 'video' ? '#f5f5f4' : '#737373'}
-                  />
-                  <Text
-                    style={{
-                      color: activeTab === 'video' ? '#f5f5f4' : '#a3a3a3',
-                      fontSize: 13,
-                      fontWeight: '600',
-                    }}
-                  >
-                    Video
-                  </Text>
-                </View>
+              <TabsTrigger value="video" style={{flexDirection: 'row', flex: 1}} className="items-center justify-center gap-1">
+                <Film
+                  size={14}
+                  color={activeTab === 'video' ? '#f5f5f4' : '#737373'}
+                />
+                <Text style={{ color: activeTab === 'video' ? '#f5f5f4' : '#a3a3a3', fontSize: 11, fontWeight: '600' }}>
+                  Video
+                </Text>
               </TabsTrigger>
-              <TabsTrigger value="saved" style={{flexDirection: 'row'}} className="mx-1">
-                <View style={{ flexDirection: 'row'}} className="!flex-row items-center gap-3">
-                  <Bookmark
-                    size={16}
-                    style={{ marginRight: 8 }}
-                    color={activeTab === 'saved' ? '#f5f5f4' : '#737373'}
-                  />
-                  <Text
-                    style={{
-                      color: activeTab === 'saved' ? '#f5f5f4' : '#a3a3a3',
-                      fontSize: 13,
-                      fontWeight: '600',
-                    }}
-                  >
-                    Saved
-                  </Text>
-                </View>
+              <TabsTrigger value="saved" style={{flexDirection: 'row', flex: 1}} className="items-center justify-center gap-1">
+                <Bookmark
+                  size={14}
+                  color={activeTab === 'saved' ? '#f5f5f4' : '#737373'}
+                />
+                <Text style={{ color: activeTab === 'saved' ? '#f5f5f4' : '#a3a3a3', fontSize: 11, fontWeight: '600' }}>
+                  Saved
+                </Text>
               </TabsTrigger>
-              <TabsTrigger value="tagged" style={{flexDirection: 'row'}} className="mx-1">
-                <View style={{ flexDirection: 'row'}} className="!flex-row items-center gap-3">
-                  <Tag
-                    size={16}
-                    style={{ marginRight: 8 }}
-                    color={activeTab === 'tagged' ? '#f5f5f4' : '#737373'}
-                  />
-                  <Text
-                    style={{
-                      color: activeTab === 'tagged' ? '#f5f5f4' : '#a3a3a3',
-                      fontSize: 13,
-                      fontWeight: '600',
-                    }}
-                  >
-                    Tagged
-                  </Text>
-                </View>
+              <TabsTrigger value="tagged" style={{flexDirection: 'row', flex: 1}} className="items-center justify-center gap-1">
+                <Tag
+                  size={14}
+                  color={activeTab === 'tagged' ? '#f5f5f4' : '#737373'}
+                />
+                <Text style={{ color: activeTab === 'tagged' ? '#f5f5f4' : '#a3a3a3', fontSize: 11, fontWeight: '600' }}>
+                  Tagged
+                </Text>
               </TabsTrigger>
             </TabsList>
 
-          <TabsContent value="posts">
-            <PostGrid initialPosts={PROFILE_POSTS} username={PROFILE_USERNAME} />
-          </TabsContent>
-          <TabsContent value="video">
-            <PostGrid initialPosts={videoPosts} username={PROFILE_USERNAME} />
-          </TabsContent>
-          <TabsContent value="saved">
-            <PostGrid initialPosts={PROFILE_SAVED_POSTS} username={PROFILE_USERNAME} />
-          </TabsContent>
-          <TabsContent value="tagged">
-            <PostGrid initialPosts={PROFILE_TAGGED_POSTS} username={PROFILE_USERNAME} />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="posts">
+              <PostGrid initialPosts={PROFILE_POSTS} username={PROFILE_USERNAME} />
+            </TabsContent>
+            <TabsContent value="video">
+              <PostGrid initialPosts={videoPosts} username={PROFILE_USERNAME} />
+            </TabsContent>
+            <TabsContent value="saved">
+              <PostGrid initialPosts={PROFILE_SAVED_POSTS} username={PROFILE_USERNAME} />
+            </TabsContent>
+            <TabsContent value="tagged">
+              <PostGrid initialPosts={PROFILE_TAGGED_POSTS} username={PROFILE_USERNAME} />
+            </TabsContent>
+          </Tabs>
         </View>
       </ScreenScrollView>
     </View>

@@ -1,6 +1,7 @@
 'use client'
 
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar'
 import { cn } from 'app/lib/utils'
 
@@ -33,23 +34,60 @@ export function StoryRing({
   size = 'md',
   className,
 }: StoryRingProps) {
+  const showGradient = hasStory && !isViewed
+  const avatarContent = (
+    <Avatar className={cn(sizeClasses[size], 'rounded-xl border-2 border-stone-950')}>
+      <AvatarImage src={src} />
+      <AvatarFallback className="bg-stone-800 text-stone-100">
+        {alt.slice(0, 2).toUpperCase()}
+      </AvatarFallback>
+    </Avatar>
+  )
+
+  if (Platform.OS === 'web') {
+    return (
+      <View
+        className={cn(
+          'rounded-xl',
+          ringClasses[size],
+          showGradient && 'bg-gradient-to-tr from-[#3FDCFF] via-[#FF5BFC] to-[#8A40CF]',
+          hasStory && isViewed && 'bg-stone-800',
+          !hasStory && 'bg-stone-900/60',
+          className
+        )}
+      >
+        {avatarContent}
+      </View>
+    )
+  }
+
+  if (showGradient) {
+    return (
+      <LinearGradient
+        colors={['#3FDCFF', '#FF5BFC', '#8A40CF']}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 0 }}
+        style={{
+          borderRadius: 12,
+          padding: size === 'sm' ? 2 : 3,
+        }}
+      >
+        {avatarContent}
+      </LinearGradient>
+    )
+  }
+
   return (
     <View
       className={cn(
         'rounded-xl',
         ringClasses[size],
-        hasStory && !isViewed && 'bg-gradient-to-tr from-amber-400 via-rose-400 to-emerald-400',
         hasStory && isViewed && 'bg-stone-800',
         !hasStory && 'bg-stone-900/60',
         className
       )}
     >
-      <Avatar className={cn(sizeClasses[size], 'rounded-xl border-2 border-stone-950')}>
-        <AvatarImage src={src} alt={alt} />
-        <AvatarFallback className="bg-stone-800 text-stone-100">
-          {alt.slice(0, 2).toUpperCase()}
-        </AvatarFallback>
-      </Avatar>
+      {avatarContent}
     </View>
   )
 }

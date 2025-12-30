@@ -43,15 +43,15 @@ const CenterButton = ({ Icon, isLargeScreen, onPress }: CenterButtonProps) => {
               cornerRadius: radiusByState.default,
               outlineWidth: 7,
               borderColor: [
-                "rgba(255, 124, 171, 1)",
-                "rgba(63, 100, 199, 1)",
-                "rgba(240, 115, 46, 1)",
+                "rgba(63, 220, 255, 1)",
+                "rgba(255, 91, 252, 1)",
+                "rgba(138, 64, 207, 1)",
               ],
-              backgroundColor: "#5a4ff9",
+              backgroundColor: "#8A40CF",
               glowLayers: [
                 {
                   glowPlacement: "inside",
-                  colors: ["#f82fc6", "#5a4ff9", "#ff923e"],
+                  colors: ["#3FDCFF", "#FF5BFC", "#8A40CF"],
                   glowSize: smallGlow,
                   opacity: 0.16,
                   speedMultiplier: 0.9,
@@ -60,9 +60,9 @@ const CenterButton = ({ Icon, isLargeScreen, onPress }: CenterButtonProps) => {
                 {
                   glowPlacement: "inside",
                   colors: [
-                    "rgba(255, 89, 213, 1)",
-                    "rgba(63, 89, 255, 1)",
-                    "rgba(255, 164, 0, 1)",
+                    "rgba(63, 220, 255, 1)",
+                    "rgba(255, 91, 252, 1)",
+                    "rgba(138, 64, 207, 1)",
                   ],
                   glowSize: largeGlow,
                   opacity: 0.26,

@@ -1,5 +1,5 @@
-import { SearchScreen } from 'app/features/search/screen.native'
+import { EventsScreen } from 'app/features/events/screen.native'
 
-export default function ScreenTwo() {
-  return <SearchScreen />
+export default function ScreenThree() {
+  return <EventsScreen />
 }

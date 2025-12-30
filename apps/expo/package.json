@@ -3,6 +3,7 @@
     "@expo/html-elements": "^0.13.7",
     "@expo/ngrok": "^4.1.0",
     "@expo/vector-icons": "^15.0.3",
+    "@lodev09/react-native-true-sheet": "^3.6.9",
     "@react-navigation/drawer": "^7.5.0",
     "@react-navigation/native": "^7.1.8",
     "@rn-primitives/avatar": "^1.2.0",

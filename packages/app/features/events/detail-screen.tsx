@@ -45,21 +45,7 @@ export function EventDetailScreen({ eventId }: EventDetailScreenProps) {
   return (
     <View className="flex-1 bg-stone-950">
       <ScreenScrollView className="flex-1 pb-24">
-        <View className="border-b border-stone-800 bg-stone-950/90">
-          <View
-            className={cn(containerClass, 'flex-row items-center gap-3 px-4 py-3')}
-          >
-            <Pressable
-              onPress={() => router.back()}
-              className="h-10 w-10 items-center justify-center rounded-full bg-stone-900/60"
-            >
-              <ArrowLeft size={18} color="#e7e5e4" />
-            </Pressable>
-            <Text className="text-base font-semibold text-stone-100">Event</Text>
-          </View>
-        </View>
-
-        <View className="relative h-72 w-full">
+        <View className="relative h-72 w-full overflow-hidden rounded-2xl">
           <SolitoImage src={event.image} alt={event.title} fill contentFit="cover" />
           <View className="absolute inset-0 bg-black/40" />
           <View className="absolute bottom-4 left-4 right-4">

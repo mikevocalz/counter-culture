@@ -5,12 +5,14 @@ import { Header } from '@expo/html-elements'
 import { Platform, View, Text, Pressable, ScrollView, StyleSheet } from 'react-native'
 import { ArrowLeft } from 'lucide-react-native'
 import { useParams, useRouter } from 'solito/navigation'
+import { useFocusEffect } from '@react-navigation/native'
 import { SolitoImage } from 'solito/image'
 import ScreenScrollView from '@components/ScreenScrollView'
 import { BottomNav } from '@components/BottomNav'
 import { VideoMedia } from '@components/VideoMedia'
 import { useCarousel } from 'app/hooks'
 import { countThreadComments, feedPosts } from 'app/lib/data'
+import { useVideoStore } from 'app/store'
 import {
   PROFILE_POSTS,
   PROFILE_SAVED_POSTS,
@@ -77,15 +79,41 @@ function flattenProfileComments(comments: ProfileComment[], depth = 0): CommentV
 
 export function FeedDetailsScreen() {
   const router = useRouter()
-  const params = useParams<Record<string, string>>()
-  const postId = params?.postId ?? params?.feedid
-  const username = params?.username
+  const params = useParams<Record<string, string | string[]>>()
+  const rawPostId = params?.postId ?? params?.feedid
+  const postId = Array.isArray(rawPostId) ? rawPostId[0] : rawPostId
+  const rawUsername = params?.username
+  const username = Array.isArray(rawUsername) ? rawUsername[0] : rawUsername
   const containerClass =
     Platform.OS === 'web' ? 'mx-auto w-full max-w-2xl' : 'w-full'
   const feedPost = feedPosts.find((item) => item.id === postId)
   const feedMatchesUser = feedPost && (!username || feedPost.author.username === username)
   const [carouselWidth, setCarouselWidth] = useState(1)
+  const [isScreenFocused, setIsScreenFocused] = useState(true)
   const scrollRef = useRef<ScrollView>(null)
+  const { setActivePostId, clearActivePostId } = useVideoStore()
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsScreenFocused(true)
+      if (postId) {
+        setActivePostId(postId)
+      }
+      return () => {
+        setIsScreenFocused(false)
+        clearActivePostId()
+      }
+    }, [clearActivePostId, postId, setActivePostId])
+  )
+
+  useEffect(() => {
+    if (Platform.OS !== 'web') return
+    if (!postId) return
+    setActivePostId(postId)
+    return () => {
+      clearActivePostId()
+    }
+  }, [clearActivePostId, postId, setActivePostId])
   const profileCandidates = useMemo(
     () => [...PROFILE_POSTS, ...PROFILE_SAVED_POSTS, ...PROFILE_TAGGED_POSTS],
     []
@@ -182,7 +210,13 @@ export function FeedDetailsScreen() {
                     <View key={`media-${index}`} style={{ width: carouselWidth, aspectRatio: 1 }}>
                       <View style={StyleSheet.absoluteFillObject}>
                         {item.type === 'video' ? (
-                          <VideoMedia source={item.url} isActive={index === currentSlide} />
+                          <VideoMedia 
+                            source={item.url} 
+                            postId={postId} 
+                            isActive={index === currentSlide && isScreenFocused}
+                            enablePlayToggle={true}
+                            showMuteButton={true}
+                          />
                         ) : (
                           <SolitoImage src={item.url} alt="Post media" fill contentFit="cover" />
                         )}

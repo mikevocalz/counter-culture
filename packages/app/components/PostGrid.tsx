@@ -15,7 +15,7 @@ export function PostGrid({ initialPosts, username }: { initialPosts: Post[]; use
   const numColumns = windowWidth >= 768 ? 4 : 3
   const handleOpen = (post: Post) => {
     if (!username) return
-    router.push(`/${encodeURIComponent(username)}/${post.id}`)
+    router.push(`/username/${post.id}?username=${encodeURIComponent(username)}`)
   }
 
   const renderItem = ({ item }: LegendListRenderItemProps<Post>) => (

@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useRef, useState } from 'react'
-import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native'
+import { Platform, View, Text, Pressable, ScrollView, StyleSheet } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { SolitoImage } from 'solito/image'
 import {
@@ -19,6 +19,7 @@ import { useBookmark, useCarousel, useDoubleTap, useLike } from 'app/hooks'
 import { CommentsDialog } from '@components/CommentsDialog'
 import { countThreadComments, type Post } from 'app/lib/data'
 import { cn } from 'app/lib/utils'
+import { useCommentsSheetStore } from 'app/store'
 
 type FeedPostProps = {
   post: Post
@@ -26,6 +27,7 @@ type FeedPostProps = {
   enableMediaPress?: boolean
   onControlPress?: () => void
   enablePlayToggle?: boolean
+  isScreenFocused?: boolean
 }
 
 export function FeedPost({
@@ -34,6 +36,7 @@ export function FeedPost({
   enableMediaPress = true,
   onControlPress,
   enablePlayToggle = true,
+  isScreenFocused = true,
 }: FeedPostProps) {
   const router = useRouter()
   const { isLiked, likeCount, toggleLike, like } = useLike({ initialCount: post.likes })
@@ -42,8 +45,9 @@ export function FeedPost({
   const [showComments, setShowComments] = useState(false)
   const [carouselWidth, setCarouselWidth] = useState(1)
   const scrollRef = useRef<ScrollView>(null)
+  const { openForPost } = useCommentsSheetStore()
   const commentCount = countThreadComments(post.comments)
-  const postHref = `/${encodeURIComponent(post.author.username)}/${post.id}`
+  const postHref = `/username/${post.id}?username=${encodeURIComponent(post.author.username)}`
   const handleOpen = onOpen ?? (() => router.push(postHref))
 
   const { onTap } = useDoubleTap({
@@ -85,6 +89,14 @@ export function FeedPost({
     },
     [carouselWidth, goToSlide]
   )
+
+  const handleOpenComments = useCallback(() => {
+    if (Platform.OS === 'web') {
+      setShowComments(true)
+      return
+    }
+    openForPost(post.id, post.comments)
+  }, [openForPost, post.comments, post.id])
 
   return (
     <>
@@ -134,7 +146,8 @@ export function FeedPost({
                       {media.type === 'video' ? (
                       <VideoMedia
                         source={media.url}
-                        isActive={index === currentSlide}
+                        postId={post.id}
+                        isActive={index === currentSlide && isScreenFocused}
                         enableTapToMute={false}
                         enablePlayToggle={enablePlayToggle}
                         onControlPress={onControlPress}
@@ -186,7 +199,7 @@ export function FeedPost({
             <Pressable onPress={toggleLike}>
               <Heart size={22} color={likedColor} fill={isLiked ? likedColor : 'transparent'} />
             </Pressable>
-            <Pressable onPress={() => setShowComments(true)}>
+            <Pressable onPress={handleOpenComments}>
               <MessageCircle size={22} color="#e7e5e4" />
             </Pressable>
             <Pressable>
@@ -207,7 +220,7 @@ export function FeedPost({
             </Text>
           ) : null}
           {commentCount > 0 ? (
-            <Pressable onPress={() => setShowComments(true)}>
+            <Pressable onPress={handleOpenComments}>
               <Text className="mt-1 text-sm text-stone-500">View all {commentCount} comments</Text>
             </Pressable>
           ) : null}
@@ -215,12 +228,14 @@ export function FeedPost({
         </View>
       </View>
 
-      <CommentsDialog
-        open={showComments}
-        onOpenChange={setShowComments}
-        comments={post.comments}
-        commentCount={commentCount}
-      />
+      {Platform.OS === 'web' ? (
+        <CommentsDialog
+          open={showComments}
+          onOpenChange={setShowComments}
+          comments={post.comments}
+          commentCount={commentCount}
+        />
+      ) : null}
     </>
   )
 }

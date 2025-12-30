@@ -1,21 +1,33 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Platform, Pressable, View } from 'react-native'
 import { LegendList, type LegendListRenderItemProps } from '@legendapp/list'
 import { useRouter } from 'solito/navigation'
+import { useFocusEffect } from '@react-navigation/native'
 import { StoriesBar } from '@components/StoriesBar'
 import { FeedPost } from '@components/FeedPost'
 import { BottomNav } from '@components/BottomNav'
 import { feedPosts } from 'app/lib/data'
 import { useScrollRestoration } from 'app/hooks'
 import { cn } from 'app/lib/utils'
+import { Motion } from '@legendapp/motion'
 
 export function HomeScreen() {
   const router = useRouter()
   const blockNavigationRef = useRef(false)
   const listRef = useRef<LegendList<(typeof feedPosts)[number]>>(null)
+  const [isScreenFocused, setIsScreenFocused] = useState(true)
   useScrollRestoration('feed')
+  
+  useFocusEffect(
+    useCallback(() => {
+      setIsScreenFocused(true)
+      return () => {
+        setIsScreenFocused(false)
+      }
+    }, [])
+  )
   const containerClass =
     Platform.OS === 'web' ? 'mx-auto w-full max-w-3xl' : 'w-full'
 
@@ -55,7 +67,7 @@ export function HomeScreen() {
       if (storageIdKey) {
         sessionStorage.setItem(storageIdKey, postId)
       }
-      router.push(`/${encodeURIComponent(username)}/${postId}`)
+      router.push(`/username/${postId}`)
     },
     [router, storageIdKey]
   )
@@ -67,15 +79,25 @@ export function HomeScreen() {
           ref={listRef}
           data={feedPosts}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }: LegendListRenderItemProps<(typeof feedPosts)[number]>) => (
-            <View className="px-[4px] py-3">
+          renderItem={({ item, index }: LegendListRenderItemProps<(typeof feedPosts)[number]>) => (
+            <Motion.View
+              className="px-[4px] py-3"
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ 
+                type: 'spring',
+                damping: 20,
+                stiffness: 100,
+                delay: index * 0.1
+              }}
+            >
               <Pressable
                 onPress={() => handleNavigate(item.author.username, item.id)}
                 className="rounded-2xl"
               >
-                <FeedPost post={item} enableMediaPress={false} onControlPress={handleControlPress} />
+                <FeedPost post={item} enableMediaPress={true} onControlPress={handleControlPress} isScreenFocused={isScreenFocused} />
               </Pressable>
-            </View>
+            </Motion.View>
           )}
           ListHeaderComponent={
             <View>

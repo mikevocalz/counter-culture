@@ -51,6 +51,7 @@
   "dependencies": {
     "@legendapp/list": "2.0.16",
     "@legendapp/motion": "2.5.3",
+    "@lodev09/react-native-true-sheet": "^3.6.9",
     "@payload-auth/better-auth-plugin": "^1.1.8",
     "@tanstack/react-form": "latest",
     "@tanstack/react-query": "latest",

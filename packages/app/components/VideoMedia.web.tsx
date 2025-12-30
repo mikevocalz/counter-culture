@@ -2,9 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Pressable, View, Text, type GestureResponderEvent } from 'react-native'
 import type { StyleProp, ViewStyle } from 'react-native'
 import { Pause, Volume2, VolumeX, Play } from 'lucide-react-native'
+import { useVideoStore } from 'app/store'
 
 type VideoMediaProps = {
   source: string
+  postId?: string
   isActive?: boolean
   style?: StyleProp<ViewStyle>
   enableTapToMute?: boolean
@@ -16,6 +18,7 @@ type VideoMediaProps = {
 
 export function VideoMedia({
   source,
+  postId,
   isActive = true,
   style,
   enableTapToMute = true,
@@ -25,8 +28,28 @@ export function VideoMedia({
   showMuteButton = true,
 }: VideoMediaProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const [muted, setMuted] = useState(true)
   const [isPlaying, setIsPlaying] = useState(true)
+  const { setPosition, getPosition, muted, toggleMuted, activePostId } = useVideoStore()
+
+  const savePosition = useCallback(() => {
+    if (!postId) return
+    const video = videoRef.current
+    if (video && video.currentTime > 0) {
+      setPosition(postId, video.currentTime)
+    }
+  }, [postId, setPosition])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    
+    if (postId) {
+      const savedPosition = getPosition(postId)
+      if (savedPosition && savedPosition > 0) {
+        video.currentTime = savedPosition
+      }
+    }
+  }, [postId, getPosition])
 
   useEffect(() => {
     const video = videoRef.current
@@ -39,16 +62,48 @@ export function VideoMedia({
       }
       setIsPlaying(true)
     } else {
+      savePosition()
       video.pause()
       setIsPlaying(false)
     }
-  }, [isActive, muted])
+  }, [isActive, muted, savePosition])
+
+  useEffect(() => {
+    if (!postId || !activePostId) return
+    if (activePostId !== postId) {
+      savePosition()
+      videoRef.current?.pause()
+      setIsPlaying(false)
+    } else if (isActive) {
+      const playPromise = videoRef.current?.play()
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {})
+      }
+      setIsPlaying(true)
+    }
+  }, [activePostId, isActive, postId, savePosition])
+
+  useEffect(() => {
+    if (!postId || !isActive) return
+    
+    const interval = setInterval(() => {
+      savePosition()
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [postId, isActive, savePosition])
+
+  useEffect(() => {
+    return () => {
+      savePosition()
+    }
+  }, [savePosition])
 
   const toggleMute = useCallback((event?: GestureResponderEvent) => {
     event?.stopPropagation?.()
     onControlPress?.()
-    setMuted((prev) => !prev)
-  }, [onControlPress])
+    toggleMuted()
+  }, [onControlPress, toggleMuted])
 
   const togglePlayback = useCallback((event?: GestureResponderEvent) => {
     event?.stopPropagation?.()
@@ -59,10 +114,11 @@ export function VideoMedia({
       void video.play()
       setIsPlaying(true)
     } else {
+      savePosition()
       video.pause()
       setIsPlaying(false)
     }
-  }, [onControlPress])
+  }, [onControlPress, savePosition])
 
   return (
     <View style={[{ width: '100%', height: '100%' }, style]}>

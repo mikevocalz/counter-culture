@@ -15,7 +15,7 @@ export function PostCard({ post, onPress }: { post: Post; onPress?: () => void }
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         whileTap={{ scale: 1.1 }}
-        transition={{ type: 'spring', damping: 20, stiffness: 260 }}
+        transition={{ type: 'timing', duration: 1000 }}
       >
         <SolitoImage
         contentFit='contain'
