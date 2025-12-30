@@ -1,6 +1,6 @@
-import dynamic from 'next/dynamic'
+import nextDynamic from 'next/dynamic'
 
-const ChatClient = dynamic(() => import('./chat-client'), { ssr: false })
+const ChatClient = nextDynamic(() => import('./chat-client'), { ssr: false })
 
 export const dynamic = 'force-dynamic'
 

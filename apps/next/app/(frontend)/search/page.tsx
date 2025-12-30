@@ -1,6 +1,6 @@
-import dynamic from 'next/dynamic'
+import nextDynamic from 'next/dynamic'
 
-const SearchClient = dynamic(() => import('./search-client'), { ssr: false })
+const SearchClient = nextDynamic(() => import('./search-client'), { ssr: false })
 
 export const dynamic = 'force-dynamic'
 
