@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react'
+import { useEffect, useState } from 'react'
 
 type Listener = () => void
 
@@ -19,14 +19,17 @@ export function getScrollPosition(key: string) {
 }
 
 export function useScrollStore() {
-  useSyncExternalStore(
-    (listener) => {
-      listeners.add(listener)
-      return () => listeners.delete(listener)
-    },
-    () => positions,
-    () => positions
-  )
+  const [, setVersion] = useState(0)
+
+  useEffect(() => {
+    const listener = () => {
+      setVersion((value) => value + 1)
+    }
+    listeners.add(listener)
+    return () => {
+      listeners.delete(listener)
+    }
+  }, [])
 
   return { saveScrollPosition, getScrollPosition }
 }
