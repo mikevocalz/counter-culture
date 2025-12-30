@@ -1,9 +1,7 @@
-import * as plugins from 'better-auth/client/plugins/index.js'
+const unavailableExport = (name: string) => () => {
+  throw new Error(`${name} is not available in this version of better-auth.`)
+}
 
-export * from 'better-auth/client/plugins/index.js'
-
-export const passkeyClient =
-  plugins.passkeyClient ??
-  (() => {
-    throw new Error('passkeyClient is not available in this version of better-auth.')
-  })
+export const adminClient = unavailableExport('adminClient')
+export const twoFactorClient = unavailableExport('twoFactorClient')
+export const passkeyClient = unavailableExport('passkeyClient')
