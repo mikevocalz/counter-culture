@@ -46,6 +46,15 @@ const withWebpack = {
       ...(config.resolve?.extensions ?? []),
     ]
 
+    config.module.rules.push({
+      test: /\.(png|svg)$/i,
+      type: 'asset/resource',
+      include: [
+        path.resolve(__dirname, '../../node_modules/@payloadcms'),
+        path.resolve(__dirname, '../../node_modules/@payloadcms/next/node_modules/@payloadcms'),
+      ],
+    })
+
     return config
   },
 }
