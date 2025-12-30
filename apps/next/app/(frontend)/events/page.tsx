@@ -1,7 +1,7 @@
-'use client'
+import EventsClient from './events-client'
 
-import { EventsScreen } from 'app/features/events/screen'
+export const dynamic = 'force-dynamic'
 
 export default function EventsPage() {
-  return <EventsScreen />
+  return <EventsClient />
 }
