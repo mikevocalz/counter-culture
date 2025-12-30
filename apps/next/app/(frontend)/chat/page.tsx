@@ -1,9 +1,7 @@
-'use client'
-
-import { ChatScreen } from 'app/features/chat/screen'
+import ChatClient from './chat-client'
 
 export const dynamic = 'force-dynamic'
 
 export default function ChatPage() {
-  return <ChatScreen />
+  return <ChatClient />
 }
