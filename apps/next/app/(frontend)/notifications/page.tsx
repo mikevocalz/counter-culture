@@ -1,7 +1,7 @@
-'use client'
+import NotificationsClient from './notifications-client'
 
-import { NotificationsScreen } from 'app/features/notifications/screen'
+export const dynamic = 'force-dynamic'
 
 export default function NotificationsPage() {
-  return <NotificationsScreen />
+  return <NotificationsClient />
 }

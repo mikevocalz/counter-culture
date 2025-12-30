@@ -1,6 +1,7 @@
-'use client'
-import { UserDetailScreen } from 'app/features/user/detail-screen'
+import UserDetailsClient from './user-details-client'
+
+export const dynamic = 'force-dynamic'
 
 export default function UserDetails() {
-  return <UserDetailScreen />
+  return <UserDetailsClient />
 }

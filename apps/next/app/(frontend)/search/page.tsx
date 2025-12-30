@@ -1,7 +1,7 @@
-'use client'
+import SearchClient from './search-client'
 
-import { SearchScreen } from 'app/features/search/screen'
+export const dynamic = 'force-dynamic'
 
 export default function SearchPage() {
-  return <SearchScreen />
+  return <SearchClient />
 }

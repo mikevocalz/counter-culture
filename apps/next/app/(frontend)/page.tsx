@@ -1,7 +1,7 @@
-'use client'
+import HomeClient from './home-client'
 
-import { HomeScreen } from 'app/features/home/screen.web'
+export const dynamic = 'force-dynamic'
 
 export default function Page() {
-  return <HomeScreen />
+  return <HomeClient />
 }
