@@ -1,6 +1,6 @@
-import dynamic from 'next/dynamic'
+import nextDynamic from 'next/dynamic'
 
-const FeedPostDetailsClient = dynamic(
+const FeedPostDetailsClient = nextDynamic(
   () => import('./feed-post-details-client'),
   { ssr: false }
 )

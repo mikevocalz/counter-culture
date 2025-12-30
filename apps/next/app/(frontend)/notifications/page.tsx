@@ -1,6 +1,6 @@
-import dynamic from 'next/dynamic'
+import nextDynamic from 'next/dynamic'
 
-const NotificationsClient = dynamic(
+const NotificationsClient = nextDynamic(
   () => import('./notifications-client'),
   { ssr: false }
 )
