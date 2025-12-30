@@ -1,7 +1,7 @@
-'use client'
+import FeedPostDetailsClient from './feed-post-details-client'
 
-import { FeedDetailsScreen } from 'app/features/feed-post/detail-screen'
+export const dynamic = 'force-dynamic'
 
 export default function FeedPostDetailsPage() {
-  return <FeedDetailsScreen />
+  return <FeedPostDetailsClient />
 }

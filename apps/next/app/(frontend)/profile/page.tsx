@@ -1,6 +1,7 @@
-'use client'
-import { ProfileScreen } from 'app/features/profile/screen'
+import ProfileClient from './profile-client'
+
+export const dynamic = 'force-dynamic'
 
 export default function Profile() {
-  return <ProfileScreen />
+  return <ProfileClient />
 }
