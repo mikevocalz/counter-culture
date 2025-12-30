@@ -20,7 +20,8 @@ const withWebpack = {
       'react-native': 'react-native-web',
       'react-native$': 'react-native-web',
       'lucide-react-native': 'lucide-react',
-      '@rn-primitives/avatar': './shims/avatar.tsx',
+      '@rn-primitives/avatar': path.resolve(__dirname, './shims/avatar.tsx'),
+      'better-auth/client/plugins$': path.resolve(__dirname, './shims/better-auth-plugins.ts'),
       'react-native/Libraries/Utilities/codegenNativeComponent': path.resolve(__dirname, 'shims/codegenNativeComponent.js'),
       'react-native/Libraries/EventEmitter/RCTDeviceEventEmitter$':
         'react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter',
@@ -45,6 +46,15 @@ const withWebpack = {
       '.web.tsx',
       ...(config.resolve?.extensions ?? []),
     ]
+
+    config.module.rules.push({
+      test: /\.(png|svg)$/i,
+      type: 'asset/resource',
+      include: [
+        path.resolve(__dirname, '../../node_modules/@payloadcms'),
+        path.resolve(__dirname, '../../node_modules/@payloadcms/next/node_modules/@payloadcms'),
+      ],
+    })
 
     return config
   },
