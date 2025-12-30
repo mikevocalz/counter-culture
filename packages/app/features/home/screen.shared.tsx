@@ -19,8 +19,15 @@ export function HomeScreen() {
   const listRef = useRef<LegendList<(typeof feedPosts)[number]>>(null)
   const [isScreenFocused, setIsScreenFocused] = useState(true)
   useScrollRestoration('feed')
-  
-  useFocusEffect(
+
+  const useFocusEffectSafe =
+    Platform.OS === 'web'
+      ? (effect: () => void | (() => void)) => {
+          useEffect(() => effect(), [effect])
+        }
+      : useFocusEffect
+
+  useFocusEffectSafe(
     useCallback(() => {
       setIsScreenFocused(true)
       return () => {
