@@ -1,4 +1,6 @@
-import EventsClient from './events-client'
+import dynamic from 'next/dynamic'
+
+const EventsClient = dynamic(() => import('./events-client'), { ssr: false })
 
 export const dynamic = 'force-dynamic'
 

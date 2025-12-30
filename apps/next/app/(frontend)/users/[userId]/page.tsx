@@ -1,4 +1,9 @@
-import UserDetailsClient from './user-details-client'
+import dynamic from 'next/dynamic'
+
+const UserDetailsClient = dynamic(
+  () => import('./user-details-client'),
+  { ssr: false }
+)
 
 export const dynamic = 'force-dynamic'
 
