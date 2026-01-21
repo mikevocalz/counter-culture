@@ -87,8 +87,8 @@ export default function TabLayout() {
       <Drawer.Screen
         name="two" // This is the name of the page and must match the url from root
         options={{
-          drawerLabel: 'Two',
-          title: 'Two',
+          drawerLabel: 'Events',
+          title: 'Events',
         }}
       />
       {/* <Drawer.Screen
