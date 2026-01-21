@@ -1,8 +1,5 @@
-import { Platform, Pressable, View } from "react-native";
+import { Platform, View } from "react-native";
 import TabBarIcon from "./TabBarIcon";
-import CenterButton from "./CenterButton";
-import { Menu, Plus } from "lucide-react-native";
-import { DrawerToggleButton } from "@react-navigation/drawer";
 
 const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
   const primaryColor = "#a032d6";
@@ -10,8 +7,8 @@ const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
 
   const orderedRoutes = [...state.routes].sort((a, b) => {
     const order = isLargeScreen 
-      ? ["index", "two", "three", "four", "center"]
-      : ["index", "two", "center", "three", "four"];
+      ? ["index", "search", "events", "notifications", "profile"]
+      : ["index", "search", "events", "notifications", "profile"];
     const aIndex = order.indexOf(a.name);
     const bIndex = order.indexOf(b.name);
     if (aIndex === -1 && bIndex === -1) return 0;
@@ -63,7 +60,7 @@ const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
     }}>
       {isLargeScreen && (
         <View style={{ alignItems: 'center', paddingTop: 200, justifyContent: 'flex-start', flex: 1, gap: 24 }}>
-          {orderedRoutes.filter(route => route.name !== "center").map((route) => {
+          {orderedRoutes.map((route) => {
             const { options } = descriptors[route.key];
             const label =
               options.tabBarLabel !== undefined
@@ -112,11 +109,6 @@ const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
           })}
         </View>
       )}
-      {isLargeScreen && orderedRoutes.find(r => r.name === "center") && (
-        <View style={{ alignItems: "center", position: 'absolute', bottom: '10%', alignSelf: 'center' }}>
-          <CenterButton Icon={Plus} isLargeScreen={isLargeScreen} />
-        </View>
-      )}
       {!isLargeScreen && orderedRoutes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -148,14 +140,6 @@ const TabBar = ({ state, descriptors, navigation, isLargeScreen }) => {
             target: route.key,
           });
         };
-
-        if (route.name === "center") {
-          return (
-            <View key={route.name} style={{ flex: 1, alignItems: "center" }}>
-              <CenterButton Icon={Plus} isLargeScreen={isLargeScreen} />
-            </View>
-          );
-        }
 
         return (
           <TabBarIcon
