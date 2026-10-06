@@ -1,6 +1,4 @@
-import nextDynamic from 'next/dynamic'
-
-const ProfileClient = nextDynamic(() => import('./profile-client'), { ssr: false })
+import ProfileClient from './profile-client'
 
 export const dynamic = 'force-dynamic'
 

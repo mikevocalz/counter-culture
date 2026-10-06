@@ -1,9 +1,4 @@
-import nextDynamic from 'next/dynamic'
-
-const FeedPostDetailsClient = nextDynamic(
-  () => import('./feed-post-details-client'),
-  { ssr: false }
-)
+import FeedPostDetailsClient from './feed-post-details-client'
 
 export const dynamic = 'force-dynamic'
 
