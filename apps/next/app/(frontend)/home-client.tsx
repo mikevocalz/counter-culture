@@ -1,6 +1,11 @@
 'use client'
 
-import { HomeScreen } from 'app/features/home/screen.web'
+import nextDynamic from 'next/dynamic'
+
+const HomeScreen = nextDynamic(
+  () => import('app/features/home/screen.web').then((m) => m.HomeScreen),
+  { ssr: false }
+)
 
 export default function HomeClient() {
   return <HomeScreen />

@@ -1,9 +1,14 @@
 'use client'
 
+import nextDynamic from 'next/dynamic'
 import { useEffect } from 'react'
 import { useParams, useRouter } from 'solito/navigation'
-import { FeedDetailsScreen } from 'app/features/feed-post/detail-screen'
 import { feedPosts } from 'app/lib/data'
+
+const FeedDetailsScreen = nextDynamic(
+  () => import('app/features/feed-post/detail-screen').then((m) => m.FeedDetailsScreen),
+  { ssr: false }
+)
 
 export default function FeedPostDetailsClient() {
   const router = useRouter()

@@ -93,7 +93,14 @@ export function FeedDetailsScreen() {
   const scrollRef = useRef<ScrollView>(null)
   const { setActivePostId, clearActivePostId } = useVideoStore()
 
-  useFocusEffect(
+  const useFocusEffectSafe =
+    Platform.OS === 'web'
+      ? (effect: () => void | (() => void)) => {
+          useEffect(() => effect(), [effect])
+        }
+      : useFocusEffect
+
+  useFocusEffectSafe(
     useCallback(() => {
       setIsScreenFocused(true)
       if (postId) {
